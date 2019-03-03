@@ -10,6 +10,9 @@ Build REST API with CQRS (Command Query Responsibility Segregation) architecture
 - GET /cache/peek
 - POST /cache/take
 
+Get how many request send to cache in interval time by ip-address. Interval time is configured by `rate-schedule` in `application.conf` 
+- GET /cache/rate?ipAddress=
+
 Body format:  
 ```sh  
 {  
@@ -33,6 +36,20 @@ For example:
 **Architecture**
 
 Using CQRS
+```
+           add/remove/take/peek  ┌────────────────┐       ┌──────────────────┐
+                           ┌───▶ │ CommandService │ ─────▶│ RawInMemoryActor │
+                           │     └────────────────┘       └──────────────────┘ 
+                           │              |
+     ┌─────────────────┐   │              |        forward
+  ──▶│ CacheController │──▶│              └--------------------------┐                 
+     └─────────────────┘   │                                         ▼
+                           │     ┌──────────────┐         ┌────────────────────────┐
+                           └───▶ │ QueryService │ ──────▶ │ AggregateInMemoryActor │
+                        rate     └──────────────┘         └────────────────────────┘
+
+
+```
 
 **Data structure**  
 

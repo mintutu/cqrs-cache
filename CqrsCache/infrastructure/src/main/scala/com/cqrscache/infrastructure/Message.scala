@@ -15,7 +15,7 @@ case object Take extends Message
 
 //Message for aggregate database
 case class AggregateRecord()
-case class RateByUser(user: String) extends Message
+case class RateByIpAddress(ipAddress: String) extends Message
 case object RateReset extends Message
 
 case class Element(key: UUID, value: String) extends Message

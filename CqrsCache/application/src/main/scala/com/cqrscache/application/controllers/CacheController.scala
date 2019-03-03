@@ -5,7 +5,7 @@ import java.util.UUID
 import com.cqrscache.application.requests.{ Rate, Request }
 import com.cqrscache.domain.entity.{ RateMessage, RecordMessage }
 import com.cqrscache.domain.services.{ CommandService, QueryService }
-import com.cqrscache.infrastructure.RateByUser
+import com.cqrscache.infrastructure.RateByIpAddress
 import com.cqrscache.infrastructure.entity.RequestMessage
 import com.cqrscache.infrastructure.event._
 import com.github.tototoshi.play2.json4s.Json4s
