@@ -1,0 +1,25 @@
+package com.cqrscache.infrastructure
+
+import java.util.UUID
+
+import akka.actor.ActorRef
+
+trait Message
+
+//Message for raw database
+case class Record(key: UUID, value: String) extends Message
+case class Add(key: UUID, value: String) extends Message
+case class Remove(key: UUID) extends Message
+case object Peek extends Message
+case object Take extends Message
+
+//Message for aggregate database
+case class AggregateRecord()
+case class RateByUser(user: String) extends Message
+case object RateReset extends Message
+
+case class Element(key: UUID, value: String) extends Message
+
+case object ExistedKey extends Message
+case object ExecutionSuccess extends Message
+case object ExecutionFailed extends Message

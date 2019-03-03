@@ -1,0 +1,5 @@
+POST     /cache/add                 @com.cqrscache.application.controllers.CacheController.add()
+POST     /cache/remove              @com.cqrscache.application.controllers.CacheController.remove()
+GET      /cache/peek                @com.cqrscache.application.controllers.CacheController.peek()
+POST     /cache/take                @com.cqrscache.application.controllers.CacheController.take()
+GET      /cache/rate                @com.cqrscache.application.controllers.CacheController.getRate(ipAddress: String)
