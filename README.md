@@ -1,6 +1,6 @@
-
 CQRS Cache  
 ===============  
+[![CircleCI](https://circleci.com/gh/specterbn/cqrs-cache.svg?style=svg)](https://circleci.com/gh/specterbn/cqrs-cache)
 ## Introduction  
 Build REST API with CQRS (Command Query Responsibility Segregation) architecture to store key-value in local memory cache.
 
