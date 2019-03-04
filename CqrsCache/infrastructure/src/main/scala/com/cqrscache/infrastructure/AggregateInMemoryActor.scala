@@ -16,7 +16,11 @@ class AggregateInMemoryActor extends Actor {
     case RateByIpAddress(ipAddress) =>
       val rate = aggregateRateMap.getOrElseUpdate(ipAddress, 0)
       sender() ! rate
+    case RateReport =>
+      sender() ! RateReportResponse(aggregateRateMap.toList)
     case RateReset =>
       aggregateRateMap.clear()
+    case _ =>
+      throw new Exception("Unknown message")
   }
 }
