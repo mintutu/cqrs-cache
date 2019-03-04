@@ -16,9 +16,11 @@ case object Take extends Message
 //Message for aggregate database
 case class AggregateRecord()
 case class RateByIpAddress(ipAddress: String) extends Message
+case object RateReport extends Message
 case object RateReset extends Message
 
 case class Element(key: UUID, value: String) extends Message
+case class RateReportResponse(report: List[(String, Int)]) extends Message
 
 case object ExistedKey extends Message
 case object ExecutionSuccess extends Message

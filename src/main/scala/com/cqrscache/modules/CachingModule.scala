@@ -16,7 +16,8 @@ class CachingModule extends AbstractModule with AkkaGuiceSupport {
   val actorSystem: ActorSystem = ActorSystem("LocalSystem")
   implicit val ex: ExecutionContext = scala.concurrent.ExecutionContext.global
   val config = ConfigFactory.load()
-  val rateSchedule = Duration.fromNanos(config.getDuration("rate-schedule").toNanos)
+  val rateScheduleInterval = Duration.fromNanos(config.getDuration("rate-schedule.interval").toNanos)
+  val rateScheduleEnabled = config.getBoolean("rate-schedule.enabled")
 
   //Actors
   val rawInMemoryActor = actorSystem.actorOf(Props[RawInMemoryActor], name = "raw-in-memory-actor")
@@ -24,7 +25,9 @@ class CachingModule extends AbstractModule with AkkaGuiceSupport {
 
   val commandService: CommandService = new CommandService(rawInMemoryActor, aggregateInMemoryActor)
   val queryService: QueryService = new QueryService(aggregateInMemoryActor)
-  actorSystem.scheduler.schedule(0 seconds, rateSchedule)(aggregateInMemoryActor ! RateReset)
+  if (rateScheduleEnabled) {
+    actorSystem.scheduler.schedule(0 seconds, rateScheduleInterval)(aggregateInMemoryActor ! RateReset)
+  }
 
   override def configure(): Unit = {
     bind(classOf[CommandService]).toInstance(commandService)

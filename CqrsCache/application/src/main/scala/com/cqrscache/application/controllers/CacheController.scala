@@ -3,9 +3,8 @@ package com.cqrscache.application.controllers
 import java.util.UUID
 
 import com.cqrscache.application.requests.{ Rate, Request }
-import com.cqrscache.domain.entity.{ RateMessage, RecordMessage }
+import com.cqrscache.domain.entity.{ RateMessage, RateReportMessage, RecordMessage }
 import com.cqrscache.domain.services.{ CommandService, QueryService }
-import com.cqrscache.infrastructure.RateByIpAddress
 import com.cqrscache.infrastructure.entity.RequestMessage
 import com.cqrscache.infrastructure.event._
 import com.github.tototoshi.play2.json4s.Json4s
@@ -30,7 +29,7 @@ class CacheController @Inject() (
         Future.successful(badRequestFormWarning(formWithError.errors))
       },
       requestBody => {
-        val ipAddress = request.headers.get("Remote_Addr").getOrElse("localhost")
+        val ipAddress = request.remoteAddress
         val uuidKey = UUID.fromString(requestBody.key)
         val event = AddingEvent(uuidKey, requestBody.value.getOrElse(""))
         val result = commandService.handle(RequestMessage(ipAddress, event, executeTime = System.currentTimeMillis()))
@@ -47,7 +46,7 @@ class CacheController @Inject() (
         Future.successful(badRequestFormWarning(formWithError.errors))
       },
       requestBody => {
-        val ipAddress = request.headers.get("Remote_Addr").getOrElse("localhost")
+        val ipAddress = request.remoteAddress
         val uuidKey = UUID.fromString(requestBody.key)
         val event = RemovingEvent(uuidKey)
         val result = commandService.handle(RequestMessage(ipAddress, event, executeTime = System.currentTimeMillis()))
@@ -60,7 +59,7 @@ class CacheController @Inject() (
 
   def peek(): Action[AnyContent] = Action.async {
     request =>
-      val ipAddress = request.headers.get("Remote_Addr").getOrElse("localhost")
+      val ipAddress = request.remoteAddress
       val event = PeekingEvent()
       val result = commandService.handle(RequestMessage(ipAddress, event, executeTime = System.currentTimeMillis()))
       result.map {
@@ -71,7 +70,7 @@ class CacheController @Inject() (
 
   def take(): Action[AnyContent] = Action.async {
     request =>
-      val ipAddress = request.headers.get("Remote_Addr").getOrElse("localhost")
+      val ipAddress = request.remoteAddress
       val event = TakingEvent()
       val result = commandService.handle(RequestMessage(ipAddress, event, executeTime = System.currentTimeMillis()))
       result.map {
@@ -82,7 +81,7 @@ class CacheController @Inject() (
 
   def getRate(ipAddress: String): Action[AnyContent] = Action.async {
     request =>
-      val ipAddress = request.headers.get("Remote_Addr").getOrElse("localhost")
+      val ipAddress = request.remoteAddress
       val event = RateEvent(ipAddress)
       val result = queryService.handle(RequestMessage(ipAddress, event, executeTime = System.currentTimeMillis()))
       result.map {
@@ -91,4 +90,13 @@ class CacheController @Inject() (
       }
   }
 
+  def getRateReport(): Action[AnyContent] = Action.async {
+    request =>
+      val ipAddress = request.remoteAddress
+      val result = queryService.handle(RequestMessage(ipAddress, RateReportEvent, executeTime = System.currentTimeMillis()))
+      result.map {
+        case msg: RateReportMessage => Ok(Extraction.decompose(msg))
+        case _                      => InternalServerError("Something wrong")
+      }
+  }
 }
