@@ -27,6 +27,8 @@ For example:
     "value":"1234"  
 }  
 ```  
+## Deployment
+This project is deployed in Heroku: https://cqrs-cache.herokuapp.com/
 
 ## Technologies  
 - Play framework 2.6  
