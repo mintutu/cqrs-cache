@@ -7,6 +7,9 @@ name := """CQRS Cache"""
 
 version := "1.0"
 
+//use for persistence actor testing
+resolvers += "dnvriend" at "http://dl.bintray.com/dnvriend/maven"
+
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala)
   .disablePlugins(PlayLayoutPlugin)
@@ -17,9 +20,6 @@ lazy val root = (project in file("."))
   )
   .settings(commonSettings)
   .settings(routesGenerator := InjectedRoutesGenerator)
-  .settings(
-    resolvers += "dnvriend" at "http://dl.bintray.com/dnvriend/maven"
-  )
 
 lazy val application = (project in file("CqrsCache/application"))
   .enablePlugins(PlayScala, SbtWeb)

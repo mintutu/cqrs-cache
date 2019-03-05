@@ -4,7 +4,7 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 import com.cqrscache.infrastructure.utils.AkkaTestkitSupport
-import akka.actor.{ ActorRef, PoisonPill, Props }
+import akka.actor.{ ActorRef, Props }
 import akka.pattern.ask
 import akka.util.Timeout
 import org.specs2.mutable.Specification
