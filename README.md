@@ -5,14 +5,14 @@ CQRS Cache
 ## Introduction  
 Build REST API with CQRS (Command Query Responsibility Segregation) architecture to store key-value in local memory cache.
 
-## Use cases  
-- POST /cache/add   
-- POST /cache/remove 
-- GET /cache/peek
-- POST /cache/take
+## Use cases
+*   POST /cache/add
+*   POST /cache/remove
+*   GET /cache/peek
+*   POST /cache/take
 
 Get how many request send to cache in interval time by ip-address. Interval time is configured by `rate-schedule` in `application.conf` 
-- GET /cache/rate?ipAddress=
+*   GET /cache/rate?ipAddress=
 
 Body format:  
 ```sh  
@@ -29,17 +29,17 @@ For example:
 }  
 ```  
 ## Deployment
-This project is deployed in Heroku: https://cqrs-cache.herokuapp.com/
+This project is deployed in Heroku: <https://cqrs-cache.herokuapp.com/>
 
 ## Technologies  
-- Play framework 2.6  
-- Akka framework 2.5.6
+*   Play framework 2.6  
+*   Akka framework 2.5.6
 
 ## Design  
 **Architecture**
 
 Using CQRS
-```
+```text
            add/remove/take/peek  ┌────────────────┐       ┌──────────────────┐
                            ┌───▶ │ CommandService │ ─────▶│ RawInMemoryActor │
                            │     └────────────────┘       └──────────────────┘ 
@@ -51,7 +51,6 @@ Using CQRS
                            └───▶ │ QueryService │ ──────▶ │ AggregateInMemoryActor │
             rate/rate-report     └──────────────┘         └────────────────────────┘
 
-
 ```
 
 **Data structure**  
@@ -62,5 +61,5 @@ Add/Remove/Peek/Take is O(c) (constant time).
 
 ## Running  
 ```sh  
-sbt run  
+sbt run
 ```  

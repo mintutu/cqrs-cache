@@ -81,7 +81,6 @@ class CacheController @Inject() (
 
   def getRate(ipAddress: String): Action[AnyContent] = Action.async {
     request =>
-      val ipAddress = request.remoteAddress
       val event = RateEvent(ipAddress)
       val result = queryService.handle(RequestMessage(ipAddress, event, executeTime = System.currentTimeMillis()))
       result.map {
