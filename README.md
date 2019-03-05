@@ -1,5 +1,6 @@
 CQRS Cache  
 ===============  
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f61788b530bc4898a291ed6049963a90)](https://app.codacy.com/app/specterbn/cqrs-cache?utm_source=github.com&utm_medium=referral&utm_content=specterbn/cqrs-cache&utm_campaign=Badge_Grade_Dashboard)
 [![CircleCI](https://circleci.com/gh/specterbn/cqrs-cache.svg?style=svg)](https://circleci.com/gh/specterbn/cqrs-cache)
 ## Introduction  
 Build REST API with CQRS (Command Query Responsibility Segregation) architecture to store key-value in local memory cache.
