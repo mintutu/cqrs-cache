@@ -7,9 +7,6 @@ name := """CQRS Cache"""
 
 version := "1.0"
 
-//use for persistence actor testing
-resolvers += "dnvriend" at "http://dl.bintray.com/dnvriend/maven"
-
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala)
   .disablePlugins(PlayLayoutPlugin)
