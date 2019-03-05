@@ -4,7 +4,7 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 import com.cqrscache.infrastructure.utils.AkkaTestkitSupport
-import akka.actor.{ ActorRef, Props }
+import akka.actor.{ ActorRef, PoisonPill, Props }
 import akka.pattern.ask
 import akka.util.Timeout
 import org.specs2.mutable.Specification
@@ -12,6 +12,8 @@ import org.specs2.mutable.Specification
 import scala.concurrent.Await
 
 class RawInMemoryActorSpec extends Specification {
+  sequential
+
   implicit val timeout: Timeout = Timeout(3, TimeUnit.SECONDS)
   val sampleKey: UUID = UUID.fromString("01234567-9ABC-DEF0-1124-56789ABC1004")
   val sampleValue = "sample01"

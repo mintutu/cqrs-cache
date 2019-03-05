@@ -17,6 +17,9 @@ lazy val root = (project in file("."))
   )
   .settings(commonSettings)
   .settings(routesGenerator := InjectedRoutesGenerator)
+  .settings(
+    resolvers += "dnvriend" at "http://dl.bintray.com/dnvriend/maven"
+  )
 
 lazy val application = (project in file("CqrsCache/application"))
   .enablePlugins(PlayScala, SbtWeb)
@@ -34,4 +37,7 @@ lazy val infrastructure = (project in file("CqrsCache/infrastructure"))
   .enablePlugins(PlayScala)
   .disablePlugins(PlayLayoutPlugin)
   .settings(commonSettings)
-  .settings(libraryDependencies ++= Seq(akkaActor, akkaTestkit, apacheCommon))
+  .settings(libraryDependencies ++= Seq(akkaPersistence, akkaPersistenceTesting, akkaRemote, akkaTestkit, levelDb, levelDbJni, apacheCommon))
+  .settings(
+    fork in Test := true
+  )
