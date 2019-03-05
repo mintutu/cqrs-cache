@@ -36,5 +36,6 @@ lazy val infrastructure = (project in file("CqrsCache/infrastructure"))
   .settings(commonSettings)
   .settings(libraryDependencies ++= Seq(akkaPersistence, akkaPersistenceTesting, akkaRemote, akkaTestkit, levelDb, levelDbJni, apacheCommon))
   .settings(
-    fork in Test := true
+    //use for persistence actor testing
+    resolvers += "dnvriend" at "http://dl.bintray.com/dnvriend/maven"
   )

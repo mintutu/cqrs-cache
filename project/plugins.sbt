@@ -1,6 +1,3 @@
-//use for persistence actor testing
-resolvers += "dnvriend" at "http://dl.bintray.com/dnvriend/maven"
-
 // The Play plugin
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.6")
 
