@@ -34,8 +34,4 @@ lazy val infrastructure = (project in file("CqrsCache/infrastructure"))
   .enablePlugins(PlayScala)
   .disablePlugins(PlayLayoutPlugin)
   .settings(commonSettings)
-  .settings(libraryDependencies ++= Seq(akkaPersistence, akkaPersistenceTesting, akkaRemote, akkaTestkit, levelDb, levelDbJni, apacheCommon))
-  .settings(
-    //use for persistence actor testing
-    resolvers += "dnvriend" at "http://dl.bintray.com/dnvriend/maven"
-  )
+  .settings(libraryDependencies ++= Seq(akkaActor, akkaTestkit, apacheCommon))
