@@ -40,3 +40,7 @@ jobs:
 
     # run tests!
     - run: cat /dev/null | sbt test:test
+    - run: sbt clean coverage test coverageReport
+    - run:
+        name: Uploading reports to CodeCov
+        command: bash <(curl -s https://codecov.io/bash) -t 8f90c42c-7b6a-4106-8518-4f2617812e2a
