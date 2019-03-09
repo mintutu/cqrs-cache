@@ -17,7 +17,4 @@ object Dependencies {
   val akkaRemote = "com.typesafe.akka" %% "akka-remote" % akkaVersion
   val akkaSl4j = "com.typesafe.akka" %% "akka-slf4j" % akkaVersion
   val apacheCommon = "org.apache.commons" % "commons-collections4" % "4.1"
-
-  val levelDb = "org.iq80.leveldb" % "leveldb" % "0.7"
-  val levelDbJni = "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8"
 }

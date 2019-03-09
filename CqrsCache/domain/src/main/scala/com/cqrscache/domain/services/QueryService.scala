@@ -28,8 +28,11 @@ class QueryService(aggregateInMemoryActor: ActorRef)(implicit val ec: ExecutionC
       case RateReportEvent =>
         val result = aggregateInMemoryActor ? RateReport
         result.map {
-          case rateReportResult: RateReportResponse => RateReportMessage(rateReportResult.report.map(e => RateMessage(e._1, e._2)))
-          case _                                    => FailedMessage("Something wrong")
+          case rateReportResult: RateReportResponse =>
+            RateReportMessage(rateReportResult.report.map {
+              case (ipAddress, rate) => RateMessage(ipAddress, rate)
+            })
+          case _ => FailedMessage("Something wrong")
         }
     }
   }
