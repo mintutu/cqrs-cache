@@ -1,6 +1,4 @@
-# First database schema
-
-# --- !Ups
+--- !Ups
 CREATE TABLE IF NOT EXISTS public.journal (
   ordering BIGSERIAL,
   persistence_id VARCHAR(255) NOT NULL,
@@ -13,5 +11,5 @@ CREATE TABLE IF NOT EXISTS public.journal (
 
 CREATE UNIQUE INDEX journal_ordering_idx ON public.journal(ordering);
 
-# --- !Downs
+--- !Downs
 DROP TABLE IF EXISTS public.journal;
