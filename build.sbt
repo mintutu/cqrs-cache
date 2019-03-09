@@ -13,7 +13,7 @@ lazy val root = (project in file("."))
   .aggregate(application, domain, infrastructure)
   .dependsOn(application, domain, infrastructure)
   .settings(
-    libraryDependencies ++= Seq( scalaTest % Test, guice)
+    libraryDependencies ++= Seq(scalaTest % Test, guice, evolutions, jdbc)
   )
   .settings(commonSettings)
   .settings(routesGenerator := InjectedRoutesGenerator)
@@ -34,7 +34,7 @@ lazy val infrastructure = (project in file("CqrsCache/infrastructure"))
   .enablePlugins(PlayScala)
   .disablePlugins(PlayLayoutPlugin)
   .settings(commonSettings)
-  .settings(libraryDependencies ++= Seq(akkaPersistence, akkaPersistenceTesting, akkaRemote, akkaTestkit, levelDb, levelDbJni, apacheCommon))
+  .settings(libraryDependencies ++= Seq(akkaPersistence, akkaPersistenceTesting, akkaPersistenceJDBC, akkaRemote, akkaTestkit, levelDb, levelDbJni, apacheCommon, postgresql))
   .settings(
     //use for persistence actor testing
     resolvers += "dnvriend" at "http://dl.bintray.com/dnvriend/maven"
