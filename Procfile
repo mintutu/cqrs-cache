@@ -1,0 +1,1 @@
+web: target/universal/stage/bin/cqrs-cache -Dhttp.port=${PORT} -Ddb.default.driver=org.postgresql.Driver
