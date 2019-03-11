@@ -26,15 +26,6 @@ class RawInMemoryActorSpec extends Specification {
       val result = Await.result(futureResponse, timeout.duration).asInstanceOf[Message]
       result must equalTo(ExecutionSuccess)
     }
-
-    "return ExistedKey if element already existed in memory cache" >> new AkkaTestkitSupport {
-      val inMemoryActor: ActorRef = system.actorOf(Props[RawInMemoryActor])
-
-      val futureResponse01 = inMemoryActor ! Add(sampleKey, sampleValue)
-      val futureResponse02 = inMemoryActor ? Add(sampleKey, sampleValue)
-      val result = Await.result(futureResponse02, timeout.duration).asInstanceOf[Message]
-      result must equalTo(ExistedKey)
-    }
   }
 
   "Receive Remove message" should {
@@ -51,6 +42,25 @@ class RawInMemoryActorSpec extends Specification {
       val inMemoryActor: ActorRef = system.actorOf(Props[RawInMemoryActor])
 
       val futureResponse01 = inMemoryActor ? Remove(sampleKey)
+      val result = Await.result(futureResponse01, timeout.duration).asInstanceOf[Option[Element]]
+      result must equalTo(None)
+    }
+  }
+
+  "Receive Get message" should {
+    "return Some(ElementRecord) if it exists in cache" >> new AkkaTestkitSupport {
+      val inMemoryActor: ActorRef = system.actorOf(Props[RawInMemoryActor])
+
+      val futureResponse01 = inMemoryActor ? Add(sampleKey, sampleValue)
+      val futureResponse02 = inMemoryActor ? Get(sampleKey)
+      val result = Await.result(futureResponse02, timeout.duration).asInstanceOf[Option[Element]]
+      result must equalTo(Some(Element(sampleKey, sampleValue)))
+    }
+
+    "return None if it does not exist in cache" >> new AkkaTestkitSupport {
+      val inMemoryActor: ActorRef = system.actorOf(Props[RawInMemoryActor])
+
+      val futureResponse01 = inMemoryActor ? Get(sampleKey)
       val result = Await.result(futureResponse01, timeout.duration).asInstanceOf[Option[Element]]
       result must equalTo(None)
     }

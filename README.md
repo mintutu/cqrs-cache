@@ -8,12 +8,14 @@ Build REST API with CQRS (Command Query Responsibility Segregation) architecture
 
 ## Use cases
 *   POST /cache/add
+*   POST /cache/get
 *   POST /cache/remove
 *   GET /cache/peek
 *   POST /cache/take
 
 Get how many request send to cache in interval time by ip-address. Interval time is configured by `rate-schedule` in `application.conf` 
 *   GET /cache/rate?ipAddress=
+*   GET /cache/rate-report
 
 Body format:  
 ```sh  
@@ -39,10 +41,10 @@ This project is deployed in Heroku: <https://cqrs-cache.herokuapp.com/>
 ## Design  
 **Architecture**
 
-Using CQRS
+*   Using CQRS
 ```text
            add/remove/take/peek  ┌────────────────┐       ┌──────────────────┐
-                           ┌───▶ │ CommandService │ ─────▶│ RawInMemoryActor │
+                           ┌───▶ │ CommandService │ ─────▶│ RawInMemoryActor │  
                            │     └────────────────┘       └──────────────────┘ 
                            │              |
      ┌─────────────────┐   │              |        forward
@@ -53,14 +55,19 @@ Using CQRS
             rate/rate-report     └──────────────┘         └────────────────────────┘
 
 ```
-
 **Data structure**  
 
-The data structure in the project based on MRU (Most Recently Used) cache and used the LinkedMap to implement the
+*   The data structure in the project based on MRU (Most Recently Used) cache and used the LinkedMap to implement the
 key-value memory cache. LinkedMap keeps track of the order in which each element is added, so the complexity of
 Add/Remove/Peek/Take is O(c) (constant time).
+*   Using PersistentActor to store persistent data in Database. 
 
 ## Running  
+*   Start docker
+```sh  
+docker-compose up -d
+```  
+*   Start application
 ```sh  
 sbt run
 ```  

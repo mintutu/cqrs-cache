@@ -6,7 +6,7 @@ import akka.pattern.ask
 import com.cqrscache.domain.entity.{ FailedMessage, RecordMessage, ResponseMessage }
 import com.cqrscache.infrastructure._
 import com.cqrscache.infrastructure.entity.RequestMessage
-import com.cqrscache.infrastructure.event.{ AddingEvent, PeekingEvent, RemovingEvent, TakingEvent }
+import com.cqrscache.infrastructure.event._
 
 import scala.concurrent.{ ExecutionContext, Future }
 import scala.concurrent.duration._
@@ -30,6 +30,12 @@ class CommandService(
         }
       case msg: RemovingEvent =>
         val result = (rawInMemoryActor ? Remove(msg.key)).mapTo[Option[Element]]
+        result.map {
+          case Some(msg) => RecordMessage(msg.key, msg.value)
+          case None      => FailedMessage("Key not found")
+        }
+      case msg: GettingEvent =>
+        val result = (rawInMemoryActor ? Get(msg.key)).mapTo[Option[Element]]
         result.map {
           case Some(msg) => RecordMessage(msg.key, msg.value)
           case None      => FailedMessage("Key not found")

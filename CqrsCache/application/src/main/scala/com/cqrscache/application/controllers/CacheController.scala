@@ -57,6 +57,26 @@ class CacheController @Inject() (
     )
   }
 
+  def get(): Action[JsValue] = Action.async(parse.json) { request =>
+    Request.form.bind(request.body).fold(
+      formWithError => {
+        Future.successful(badRequestFormWarning(formWithError.errors))
+      },
+      requestBody => {
+        val ipAddress = request.remoteAddress
+        val uuidKey = UUID.fromString(requestBody.key)
+        val event = GettingEvent(uuidKey)
+        val result = commandService.handle(RequestMessage(ipAddress, event, executeTime = System.currentTimeMillis()))
+        result.map {
+          case msg: RecordMessage => Ok(Extraction.decompose(Request(msg.key.toString, Some(msg.value))))
+          case _                  => NotFound("Key not found")
+        }.recover {
+          case _: Exception => InternalServerError("Something wrong")
+        }
+      }
+    )
+  }
+
   def peek(): Action[AnyContent] = Action.async {
     request =>
       val ipAddress = request.remoteAddress
