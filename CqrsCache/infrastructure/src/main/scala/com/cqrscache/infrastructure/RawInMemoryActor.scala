@@ -31,22 +31,24 @@ class RawInMemoryActor extends PersistentActor with ActorLogging {
 
   override def receiveCommand: Receive = {
     case Add(key, value) => {
-      if (cacheMap.containsKey(key)) {
-        sender() ! ExistedKey
+      saveEvent(Add(key, value))
+      cacheMap.put(key, value)
+      sender() ! ExecutionSuccess
+    }
+
+    case Get(key) => {
+      val value = cacheMap.get(key)
+      if (value != null) {
+        sender() ! Some(Element(key, value))
       } else {
-        persistAsync(Add(key, value)) { _ =>
-          if (lastSequenceNr % snapShotInterval == 0 && lastSequenceNr != 0) {
-            saveSnapshot(cacheMap)
-          }
-        }
-        cacheMap.put(key, value)
-        sender() ! ExecutionSuccess
+        sender() ! None
       }
     }
 
     case Remove(key) => {
       val value = cacheMap.get(key)
       if (value != null) {
+        saveEvent(Remove(key))
         cacheMap.remove(key)
         sender() ! Some(Element(key, value))
       } else {
@@ -66,12 +68,21 @@ class RawInMemoryActor extends PersistentActor with ActorLogging {
 
     case Take => {
       if (!cacheMap.isEmpty) {
+        saveEvent(Take)
         val lastKey = cacheMap.lastKey()
         val lastValue = cacheMap.get(lastKey)
         cacheMap.remove(lastKey)
         sender() ! Some(Element(lastKey, lastValue))
       } else {
         sender() ! None
+      }
+    }
+  }
+
+  private def saveEvent(message: Message): Unit = {
+    persistAsync(message) { _ =>
+      if (lastSequenceNr % snapShotInterval == 0 && lastSequenceNr != 0) {
+        saveSnapshot(cacheMap)
       }
     }
   }

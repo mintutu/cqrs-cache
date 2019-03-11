@@ -1,4 +1,5 @@
 POST        /cache/add                @com.cqrscache.application.controllers.CacheController.add()
+POST        /cache/get                @com.cqrscache.application.controllers.CacheController.get()
 POST        /cache/remove             @com.cqrscache.application.controllers.CacheController.remove()
 GET         /cache/peek               @com.cqrscache.application.controllers.CacheController.peek()
 POST        /cache/take               @com.cqrscache.application.controllers.CacheController.take()

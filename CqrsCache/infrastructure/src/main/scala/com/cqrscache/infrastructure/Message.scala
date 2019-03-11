@@ -10,6 +10,7 @@ trait Message
 case class Record(key: UUID, value: String) extends Message
 case class Add(key: UUID, value: String) extends Message
 case class Remove(key: UUID) extends Message
+case class Get(key: UUID) extends Message
 case object Peek extends Message
 case object Take extends Message
 
