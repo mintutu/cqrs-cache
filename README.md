@@ -5,6 +5,7 @@ CQRS Cache
 [![codecov](https://codecov.io/gh/specterbn/cqrs-cache/branch/master/graph/badge.svg)](https://codecov.io/gh/specterbn/cqrs-cache)
 ## Introduction  
 Build REST API with CQRS (Command Query Responsibility Segregation) architecture to store key-value in local memory cache.
+I want to make a sample project with CQRS design. Normally we're easy to catch CQS (Command Query Seperation)than CQRS. CQS puts commands and queries in different methods within a type otherwhile CQRS puts commands and queries on different objects. In this project, I separate data into 2 types: Raw Data and Aggregate Data.
 
 ## Use cases
 *   POST /cache/add
@@ -36,7 +37,7 @@ This project is deployed in Heroku: <https://cqrs-cache.herokuapp.com/>
 
 ## Technologies  
 *   Play framework 2.6  
-*   Akka framework 2.5.6
+*   Akka 2.5.6 (Persistent Actor)
 
 ## Design  
 **Architecture**
