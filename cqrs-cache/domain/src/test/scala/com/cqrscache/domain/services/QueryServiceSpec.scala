@@ -4,14 +4,14 @@ import java.util.concurrent.TimeUnit
 
 import akka.actor.Props
 import akka.util.Timeout
-import com.cqrscache.domain.entity.RateMessage
+import com.cqrscache.domain.entity.{RateMessage, RateReportMessage}
 import com.cqrscache.infrastructure.entity.RequestMessage
-import com.cqrscache.infrastructure.event.RateEvent
+import com.cqrscache.infrastructure.event.{RateEvent, RateReportEvent}
 import com.cqrscache.infrastructure.utils.AkkaTestkitSupport
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 
-import scala.concurrent.{ Await, ExecutionContext }
+import scala.concurrent.{Await, ExecutionContext}
 import scala.concurrent.duration._
 
 class QueryServiceSpec extends Specification with Mockito {
@@ -28,6 +28,13 @@ class QueryServiceSpec extends Specification with Mockito {
       result must equalTo(RateMessage(ipAddress, 1))
     }
 
+    "process RateReportEvent success" in new AkkaTestkitSupport {
+      val queryMockActor = system.actorOf(Props[MockInMemoryActor])
+      val queryService = new QueryService(queryMockActor)
+      val resultFuture = queryService.handle(RequestMessage(ipAddress, RateReportEvent, System.currentTimeMillis()))
+      val result = Await.result(resultFuture, 3 seconds)
+      result must equalTo(RateReportMessage(Nil))
+    }
   }
 
 }

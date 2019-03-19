@@ -3,7 +3,7 @@ import Keys._
 import Dependencies._
 import Settings._
 
-name := """CQRS Cache"""
+name := """cqrs-cache"""
 
 version := "1.0"
 
@@ -48,12 +48,13 @@ dockerfile in docker := {
 
   new Dockerfile {
     from("openjdk:8-jre")
-    env(("HTTP_PORT", "8080"))
+    env(("HTTP_PORT", "9000"))
     env(("JMX_PORT", "3338"))
     env(("JMX_REMOTE_SSL", "false"))
     env(("JMX_REMOTE_AUTHENTICATE", "false"))
     entryPointRaw(
       s"""
+         | $targetDir/bin/${executableScriptName.value} -Dappname=cqrs-cache-app
          |-Dhttp.port=$${HTTP_PORT}
          |-Ddb.default.driver=org.postgresql.Driver
          |-Dcom.sun.management.jmxremote.port=$${JMX_PORT}
