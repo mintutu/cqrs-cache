@@ -1,16 +1,35 @@
 version: '3.1'
 
 services:
-  db:
+  postgres-local:
     image: postgres
     restart: always
     ports:
-      - 5432:5432
+    - 5432:5432
     environment:
       POSTGRES_PASSWORD: postgres
+    hostname: postgres-local
+    networks:
+    - cqrs-network
 
   adminer:
     image: adminer
     restart: always
     ports:
     - 8080:8080
+    networks:
+    - cqrs-network
+
+  cqrs-cache:
+    image: cqrs-cache/cqrs-cache:latest
+    restart: always
+    ports:
+    - 9000:9000
+    hostname: cqrs-cache
+    links:
+    - postgres-local
+    networks:
+    - cqrs-network
+
+networks:
+  cqrs-network:
