@@ -2,7 +2,7 @@ package com.cqrscache.infrastructure
 
 import java.util.concurrent.TimeUnit
 
-import akka.actor.{ActorRef, Props}
+import akka.actor.{ ActorRef, Props }
 import com.cqrscache.infrastructure.utils.AkkaTestkitSupport
 import org.specs2.mutable.Specification
 import akka.pattern.ask
