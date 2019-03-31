@@ -3,7 +3,7 @@ package com.cqrscache.application.controllers
 import java.util.UUID
 
 import com.cqrscache.application.requests.{ Rate, Request }
-import com.cqrscache.domain.entity.{ RateMessage, RateReportMessage, RecordMessage }
+import com.cqrscache.domain.entity.{ FailedMessage, RateMessage, RateReportMessage, RecordMessage }
 import com.cqrscache.domain.services.{ CommandService, QueryService }
 import com.cqrscache.infrastructure.entity.RequestMessage
 import com.cqrscache.infrastructure.event._
@@ -50,7 +50,10 @@ class CacheController @Inject() (
         val uuidKey = UUID.fromString(requestBody.key)
         val event = RemovingEvent(uuidKey)
         val result = commandService.handle(RequestMessage(ipAddress, event, executeTime = System.currentTimeMillis()))
-        result.map { _ => success() }.recover {
+        result.map {
+          case RecordMessage(_, _) => success()
+          case FailedMessage(err)  => badRequestFormWarning("key", err)
+        }.recover {
           case _: Exception => InternalServerError("Something wrong")
         }
       }
