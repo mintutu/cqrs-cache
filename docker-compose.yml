@@ -20,16 +20,5 @@ services:
     networks:
     - cqrs-network
 
-  cqrs-cache:
-    image: cqrs-cache/cqrs-cache:latest
-    restart: always
-    ports:
-    - 9000:9000
-    hostname: cqrs-cache
-    links:
-    - postgres-local
-    networks:
-    - cqrs-network
-
 networks:
   cqrs-network:
